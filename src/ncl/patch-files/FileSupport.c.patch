@@ -1,0 +1,11 @@
+--- ncl_ncarg-6.1.2/ni/src/ncl/FileSupport.c	2013-02-06 19:28:47.000000000 -0800
++++ patch-files/FileSupport.c	2014-03-21 09:37:56.000000000 -0700
+@@ -38,7 +38,7 @@
+ #endif
+ 
+ #ifdef BuildHDF4
+-#include <hdf/mfhdf.h>
++#include <mfhdf.h>
+ #endif
+ 
+ #ifdef BuildHDFEOS5

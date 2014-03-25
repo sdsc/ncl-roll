@@ -1,0 +1,15 @@
+--- ncl_ncarg-6.1.2/ncarview/src/lib/libncarg_ras/hdf.c	2013-02-06 19:29:19.000000000 -0800
++++ patch-files/hdf.c	2014-03-21 09:27:14.000000000 -0700
+@@ -51,9 +51,9 @@
+ #include <fcntl.h>
+ #include <string.h>
+ #include <ncarg/c.h>
+-#include <hdf/hdf.h>
+-#include <hdf/df.h>
+-#include <hdf/dfgr.h>
++#include <hdf.h>
++#include <df.h>
++#include <dfgr.h>
+ #include "ncarg_ras.h"
+ #include "hdfP.h"
+ #include "options.h"

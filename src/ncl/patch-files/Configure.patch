@@ -1,0 +1,778 @@
+--- ncl_ncarg-6.1.2/Configure	2013-02-06 19:29:23.000000000 -0800
++++ patch-files/Configure	2014-03-24 08:53:12.000000000 -0700
+@@ -183,10 +183,10 @@
+ 
+ onintr cleanup
+ 
+-QuestionAndAnswer:
+-echo ""
+-echo "*** Configuration Procedure for NCL and NCAR Graphics V$nclversion ***"
+-echo ""
++#QuestionAndAnswer:
++#echo ""
++#echo "*** Configuration Procedure for NCL and NCAR Graphics V$nclversion ***"
++#echo ""
+ 
+ if ($?verbose_option) then
+   cat <<"EOF"
+@@ -202,9 +202,9 @@
+ ======================================================================
+ "EOF"
+ 
+-  echo -n "Enter Return to continue, or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
++# echo -n "Enter Return to continue, or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
+ 
+   cat <<"EOF"
+ ======================================================================
+@@ -228,9 +228,9 @@
+   echo "======================================================================"
+ endif
+ 
+-echo -n "Enter Return to continue, or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
++#echo -n "Enter Return to continue, or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
+ 
+ 
+ #
+@@ -258,25 +258,25 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build NCL ($buildncl)?"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildncl")) then
+-    set buildncl = $answer
++# echo ""
++# echo "Build NCL ($buildncl)?"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildncl")) then
++    set buildncl = "y"
+     set newbuildncl
+     set altered
+-  endif
+-else
++# endif
++#else
+ #  echo ""
+ #  echo "Not building NCL...source code directory is not available."
+-  set buildncl = "n"
+-  set buildudunits = "n"
+-  set buildtriangle = "n"
+-  set newbuildncl
+-  set altered
+-endif
++#  set buildncl = "n"
++#  set buildudunits = "n"
++#  set buildtriangle = "n"
++#  set newbuildncl
++#  set altered
++#endif
+ 
+ #
+ # Parent installation directory for NCL/NCAR Graphics.
+@@ -296,26 +296,26 @@
+ "EOF"
+ endif
+ 
+-echo ""
+-echo "Parent installation directory : $parentdir"
+-echo -n "Enter Return (default), new directory, or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-if ("$answer" != "") then
+-  set parentdir="$answer"
++#echo ""
++#echo "Parent installation directory : $parentdir"
++#echo -n "Enter Return (default), new directory, or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++#if ("$answer" != "") then
++  set parentdir=ROLLNCL
+   set altered
+-endif
++#endif
+ 
+-if (-d $parentdir) then
+-  if (! -w "$parentdir") then
+-    echo "<$parentdir> is not writable."
+-    echo "New directory name? (y)"
+-    echo -n "Enter Return(default), y(yes), n(no), or q(quit) > "
+-    set answer="$<"
+-    if ("$answer" == "q") goto cleanup
+-    if ("$answer" == "y" || "$answer" == "") goto proc_parent
+-  endif
+-endif
++#if (-d $parentdir) then
++#  if (! -w "$parentdir") then
++#    echo "<$parentdir> is not writable."
++#    echo "New directory name? (y)"
++#    echo -n "Enter Return(default), y(yes), n(no), or q(quit) > "
++#    set answer="$<"
++#    if ("$answer" == "q") goto cleanup
++#    if ("$answer" == "y" || "$answer" == "") goto proc_parent
++#  endif
++#endif
+ 
+ #
+ # Make sure subdirs bin, include, lib, and man are writable.
+@@ -359,16 +359,16 @@
+ "EOF"
+ endif
+ 
+-echo ""
+-echo "System temp space directory   : $tmpdir"
+-echo -n "Enter Return (default), new directory, or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-if ("$answer" != "") then
+-  set tmpdir="$answer"
+-  set newtmp
+-  set altered
+-endif
++#echo ""
++#echo "System temp space directory   : $tmpdir"
++#echo -n "Enter Return (default), new directory, or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++#if ("$answer" != "") then
++#  set tmpdir="$answer"
++#  set newtmp
++#  set altered
++#endif
+ 
+ if (-d "$tmpdir") then
+   if (! -w "$tmpdir") then
+@@ -424,18 +424,18 @@
+ "EOF"
+ endif
+ 
+-echo ""
+-echo "Build NetCDF4 feature support (optional)? ($buildnc4support)"
+-echo "Requires the NetCDF version 4.1.2 or later."
+-echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-if (("$answer" != "") && ("$answer" != "$buildnc4support")) then
+-	set buildnc4support = $answer
+-	set newbuildnc4support
+-    echo "Setting support for NetCDF 4..."
+-    set altered
+-endif
++#echo ""
++#echo "Build NetCDF4 feature support (optional)? ($buildnc4support)"
++#echo "Requires the NetCDF version 4.1.2 or later."
++#echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++#if (("$answer" != "") && ("$answer" != "$buildnc4support")) then
++	set buildnc4support = "y"
++ 	set newbuildnc4support
++#    echo "Setting support for NetCDF 4..."
++#    set altered
++#endif
+ 
+ #
+ # Don't ask about PNG support here, because PNG support is now
+@@ -499,60 +499,60 @@
+ "EOF"
+ endif
+ 
+-if ("$buildncl" == "y" || "$buildncl" == "Y") then
+-  echo ""
+-  echo "Build HDF4 support (optional) into NCL? ($buildhdf4)"
+-  echo "Informational note: HDF4 is no longer required to build NCL,"
+-  echo "but it is a prerequisite if you need HDF-EOS2 support."
+-  echo "(Requires external HDF-4 libraries available from "
+-  echo "http://www.hdfgroup.org/release4/obtain.html)"
+-  echo "Please see the instructions at"
+-  echo "http://www.ncl.ucar.edu/Download/build_from_src.shtml#HDF-4"
+-  echo "to make sure your HDF software is built according to NCL requirements."
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
+-      set buildhdf4 = $answer
++#if ("$buildncl" == "y" || "$buildncl" == "Y") then
++#  echo ""
++#  echo "Build HDF4 support (optional) into NCL? ($buildhdf4)"
++#  echo "Informational note: HDF4 is no longer required to build NCL,"
++#  echo "but it is a prerequisite if you need HDF-EOS2 support."
++#  echo "(Requires external HDF-4 libraries available from "
++#  echo "http://www.hdfgroup.org/release4/obtain.html)"
++#  echo "Please see the instructions at"
++#  echo "http://www.ncl.ucar.edu/Download/build_from_src.shtml#HDF-4"
++#  echo "to make sure your HDF software is built according to NCL requirements."
++#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#  set answer="$<"
++#  if ("$answer" == "q") goto cleanup
++#  if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
++      set buildhdf4 = "n"
+       set newbuildhdf4
+       set altered
+-  endif
+-  echo ""
+-  echo "Also build HDF4 support (optional) into raster library? ($buildrasterhdf)"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildrasterhdf")) then
+-      set buildrasterhdf = $answer
++#  endif
++#  echo ""
++#  echo "Also build HDF4 support (optional) into raster library? ($buildrasterhdf)"
++#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#  set answer="$<"
++#  if ("$answer" == "q") goto cleanup
++#  if (("$answer" != "") && ("$answer" != "$buildrasterhdf")) then
++       set buildrasterhdf = "n"
+       set newbuildrasterhdf
+-      set altered
+-  endif
+-else
+-  echo ""
+-  echo "Build HDF4 support (optional) into raster library? ($buildrasterhdf)"
+-  echo "(Requires the external HDF4 libraries available from http://www.hdfgroup.org/release4/obtain.html) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
+-    set buildrasterhdf = $answer
+-    set newbuildrasterhdf
+-    set altered
+-  endif
+-endif
+-set hdfwithszip = "n"
+-if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
+-    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
+-    echo ""
+-    echo "Did you build HDF4 with szip support? ($hdfwithszip)"
+-    echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-    set answer="$<"
+-    if ("$answer" == "q") goto cleanup
+-    if (("$answer" != "") && ("$answer" != "$hdfwithszip")) then
+-        set hdfwithszip = "$answer"
+-        set hdflib = "-lmfhdf -ldf -ljpeg -lz -lsz"
+-    endif
+-endif
++       set altered
++#  endif
++#else
++#  echo ""
++#  echo "Build HDF4 support (optional) into raster library? ($buildrasterhdf)"
++#  echo "(Requires the external HDF4 libraries available from http://www.hdfgroup.org/release4/obtain.html) "
++#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#  set answer="$<"
++#  if ("$answer" == "q") goto cleanup
++#  if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
++#   set buildrasterhdf = "n"
++#   set newbuildrasterhdf
++#   set altered
++#  endif
++#endif
++set hdfwithszip = "y"
++#if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
++#    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
++#    echo ""
++#    echo "Did you build HDF4 with szip support? ($hdfwithszip)"
++#    echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#    set answer="$<"
++#    if ("$answer" == "q") goto cleanup
++#    if (("$answer" != "") && ("$answer" != "$hdfwithszip")) then
++         set hdfwithszip = "y"
++         set hdflib = "-LROLLHDF4/lib -lmfhdf -ldf -ljpeg -lz -lsz"
++#    endif
++#endif
+ 
+ #
+ # Only ask about NetCDF- UDUNITS, HDF-EOS2, HDF-EOS5, HDF5, Triangle, Vis5d+, and
+@@ -581,20 +581,20 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build Triangle support (optional) into NCL ($buildtriangle)"
+-  echo "Requires 'triangle.c' and 'triangle.h' code from"
+-  echo "http://www.cs.cmu.edu/~quake/triangle.html"
+-  echo "You must agree to the license restrictions in the above URL,"
+-  echo "download these two files, and put them in ni/src/lib/hlu"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
+-	set buildtriangle = $answer
+-	set newbuildtriangle
+-        set altered
+-  endif
++#  echo ""
++#  echo "Build Triangle support (optional) into NCL ($buildtriangle)"
++#  echo "Requires 'triangle.c' and 'triangle.h' code from"
++#  echo "http://www.cs.cmu.edu/~quake/triangle.html"
++#  echo "You must agree to the license restrictions in the above URL,"
++#  echo "download these two files, and put them in ni/src/lib/hlu"
++#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++#  set answer="$<"
++#  if ("$answer" == "q") goto cleanup
++#  if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
++ 	set buildtriangle = "n"
++ 	set newbuildtriangle
++         set altered
++#  endif
+ 
+ 
+ #
+@@ -622,19 +622,19 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "If you are using NetCDF V4.x, did you enable NetCDF-4 support ($buildnetcdf4)?"
+-  echo "(Requires compiling NetCDF-4 library available from"
+-  echo "http://www.unidata.ucar.edu/software/netcdf/"
+-  echo "and building with '--enable-netcdf-4') "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildnetcdf4")) then
+-	set buildnetcdf4 = $answer
+-	set newbuildnetcdf4
++# echo ""
++# echo "If you are using NetCDF V4.x, did you enable NetCDF-4 support ($buildnetcdf4)?"
++# echo "(Requires compiling NetCDF-4 library available from"
++# echo "http://www.unidata.ucar.edu/software/netcdf/"
++# echo "and building with '--enable-netcdf-4') "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildnetcdf4")) then
++        set buildnetcdf4 = y
++ 	set newbuildnetcdf4
+         set altered
+-  endif
++#  endif
+ 
+   if ($?verbose_option) then
+     cat <<"EOF"
+@@ -657,17 +657,17 @@
+ "EOF"
+   endif
+ 
+-  set netcdfwithdap = "y"
+-  echo ""
+-  echo "Did you build NetCDF with OPeNDAP support ($netcdfwithdap)?"
+-  echo "(OPeNDAP support is only available for NetCDF 4.1 or later)"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$netcdfwithdap")) then
+-      set netcdfwithdap = "$answer"
+-      set netcdflib = "-lnetcdf"
+-  endif
++# set netcdfwithdap = "y"
++# echo ""
++# echo "Did you build NetCDF with OPeNDAP support ($netcdfwithdap)?"
++# echo "(OPeNDAP support is only available for NetCDF 4.1 or later)"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$netcdfwithdap")) then
++      set netcdfwithdap =  "n"
++      set netcdflib = "-LROLLNETCDF/lib -lnetcdf"
++# endif
+ 
+ 
+ #
+@@ -686,18 +686,18 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build GDAL support (optional) into NCL? ($buildgdal)"
+-  echo "(Requires GDAL and PROJ4 from http://www.gdal.org/ and "
+-  echo "http://trac.osgeo.org/proj/) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildgdal")) then
+-      set buildgdal = $answer
+-      set newbuildgdal
+-      set altered
+-  endif
++# echo ""
++# echo "Build GDAL support (optional) into NCL? ($buildgdal)"
++# echo "(Requires GDAL and PROJ4 from http://www.gdal.org/ and "
++# echo "http://trac.osgeo.org/proj/) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildgdal")) then
++#     set buildgdal = $answer
++#     set newbuildgdal
++#     set altered
++# endif
+ 
+ #
+ # GRIDSPEC
+@@ -750,18 +750,18 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build Udunits-2 support (optional) into NCL ($buildudunits)"
+-  echo "(Requires the external V2.x Udunits [not V1.x] library available from"
+-  echo "http://www.unidata.ucar.edu/software/udunits/udunits-2/udunits2.html) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildudunits")) then
+-	set buildudunits = $answer
+-	set newbuildudunits
++# echo ""
++# echo "Build Udunits-2 support (optional) into NCL ($buildudunits)"
++# echo "(Requires the external V2.x Udunits [not V1.x] library available from"
++# echo "http://www.unidata.ucar.edu/software/udunits/udunits-2/udunits2.html) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildudunits")) then
++        set buildudunits = "n"
++        set newbuildudunits
+         set altered
+-  endif
++# endif
+ 
+ #
+ # Vis5d+
+@@ -783,18 +783,18 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build Vis5d+ support (optional) into NCL ($buildv5d)"
+-  echo "(Requires the external Vis5d+ software available from"
+-  echo "http://vis5d.sourceforge.net/) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildv5d")) then
+-	set buildv5d = $answer
+-	set newbuildv5d
+-        set altered
+-  endif
++# echo ""
++# echo "Build Vis5d+ support (optional) into NCL ($buildv5d)"
++# echo "(Requires the external Vis5d+ software available from"
++# echo "http://vis5d.sourceforge.net/) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildv5d")) then
++#       set buildv5d = $answer
++#       set newbuildv5d
++#       set altered
++# endif
+ 
+ #
+ # HDF-EOS2
+@@ -815,19 +815,19 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build HDF-EOS2 support (optional) into NCL ($buildhdfeos)"
+-  echo "(Requires the external HDF-EOS2 libraries available from"
+-  echo "http://newsroom.gsfc.nasa.gov/sdptoolkit/toolkit.html. You"
+-  echo "must also have included support for HDF4.) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdfeos")) then
+-  	set buildhdfeos = $answer
++# echo ""
++# echo "Build HDF-EOS2 support (optional) into NCL ($buildhdfeos)"
++# echo "(Requires the external HDF-EOS2 libraries available from"
++# echo "http://newsroom.gsfc.nasa.gov/sdptoolkit/toolkit.html. You"
++# echo "must also have included support for HDF4.) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildhdfeos")) then
++  	set buildhdfeos = "n"
+   	set newbuildhdfeos
+         set altered
+-  endif
++# endif
+ 
+ 
+ #
+@@ -848,18 +848,18 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build HDF5 support (optional) into NCL ($buildhdf5)"
+-  echo "(Requires the external HDF5 library available from"
+-  echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
+-  	set buildhdf5 = $answer
++# echo ""
++# echo "Build HDF5 support (optional) into NCL ($buildhdf5)"
++# echo "(Requires the external HDF5 library available from"
++# echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
++  	set buildhdf5 = "y"
+   	set newbuildhdf5
+         set altered
+-  endif
++# endif
+ 
+ #
+ # HDF-EOS5
+@@ -879,18 +879,18 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build HDF-EOS5 support (optional) into NCL ($buildhdfeos5)"
+-  echo "(Requires the external HDF-EOS5 library available from"
+-  echo "ftp://edhs1.gsfc.nasa.gov/pub)"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdfeos5")) then
+-  	set buildhdfeos5 = $answer
++# echo ""
++# echo "Build HDF-EOS5 support (optional) into NCL ($buildhdfeos5)"
++# echo "(Requires the external HDF-EOS5 library available from"
++# echo "ftp://edhs1.gsfc.nasa.gov/pub)"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildhdfeos5")) then
++  	set buildhdfeos5 = "n"
+   	set newbuildhdfeos5
+         set altered
+-  endif
++# endif
+ 
+ #
+ # GRIB2
+@@ -908,20 +908,19 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build GRIB2 support (optional) into NCL ($buildgrib2)"
+-  echo "(Requires the GRIB2 decoder (g2clib) library and jasper from"
+-  echo "http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/ and"
+-  echo "http://www.ece.uvic.ca/~mdadams/jasper/) "
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildgrib2")) then
+-  	set buildgrib2 = $answer
++# echo ""
++# echo "Build GRIB2 support (optional) into NCL ($buildgrib2)"
++# echo "(Requires the GRIB2 decoder (g2clib) library and jasper from"
++# echo "http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/ and"
++# echo "http://www.ece.uvic.ca/~mdadams/jasper/) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildgrib2")) then
++  	set buildgrib2 = "n"
+   	set newbuildgrib2
+         set altered
+-  endif
+-
++# endif
+ else
+   set buildhdfeos  = "n"
+   set buildhdfeos5 = "n"
+@@ -1066,35 +1065,35 @@
+ "EOF"
+ endif
+ 
+-set loclibdir = `echo "$loclib" | sed -e 's/-L//g'`
++#set loclibdir = `echo "$loclib" | sed -e 's/-L//g'`
+ 
+ proc_loclibdir:
+-echo ""
+-echo "Enter local library search path(s) : $loclibdir"
+-echo -n "Enter Return (default), new directories, or q(quit) > "
+-set answer="$<"
+-
+-if ("$answer" == "q") goto cleanup
+-if ("$answer" != "") then
+-  set loclibdir = "$answer"
+-  set nloclib
+-  set altered
+-endif
+-if ("$loclibdir" != "") then
+-  set libs = ($loclibdir:x)
+-  set newloclib=""
+-  while ($#libs > 0)
+-    if (! -d $libs[1]) then
+-      echo "  *** Warning: <$libs[1]> does not exist"
+-      echo ""
+-      goto proc_loclibdir
+-    else 
+-      set newloclib = ($newloclib "-L$libs[1]")
+-    endif
+-    shift libs
+-  end
+-  set loclib = "$newloclib"
+-endif
++#echo ""
++#echo "Enter local library search path(s) : $loclibdir"
++#echo -n "Enter Return (default), new directories, or q(quit) > "
++#set answer="$<"
++
++#if ("$answer" == "q") goto cleanup
++#if ("$answer" != "") then
++#  set loclibdir = "$answer"
++#  set nloclib
++#  set altered
++#endif
++#if ("$loclibdir" != "") then
++#  set libs = ($loclibdir:x)
++#  set newloclib=""
++#  while ($#libs > 0)
++#    if (! -d $libs[1]) then
++#      echo "  *** Warning: <$libs[1]> does not exist"
++#      echo ""
++#      goto proc_loclibdir
++#    else 
++#      set newloclib = ($newloclib "-L$libs[1]")
++#    endif
++#    shift libs
++#  end
++#  set loclib = "$newloclib"
++#endif
+ 
+ #
+ # X11 include files.
+@@ -1117,34 +1116,34 @@
+ 
+ 
+ 
+-set locincdir = `echo "$locinc" | sed -e 's/-I//g'`
++#set locincdir = `echo "$locinc" | sed -e 's/-I//g'`
+ 
+-proc_locincdir:
+-echo ""
+-echo "Enter local include search path(s) : $locincdir"
+-echo -n "Enter Return (default), new directories, or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-if ("$answer" != "") then
+-  set locincdir = "$answer"
+-  set nlocinc
+-  set altered
+-endif
+-if ("$locincdir" != "") then
+-  set incs = ($locincdir:x)
+-  set newlocinc=""
+-  while ($#incs > 0)
+-    if (! -d $incs[1]) then
+-      echo "  *** Warning: <$incs[1]> does not exist"
+-      echo ""
+-      goto proc_locincdir
+-    else 
+-      set newlocinc = ($newlocinc "-I$incs[1]")
+-    endif
+-    shift incs
+-  end
+-  set locinc = "$newlocinc"
+-endif
++#proc_locincdir:
++#echo ""
++#echo "Enter local include search path(s) : $locincdir"
++#echo -n "Enter Return (default), new directories, or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++#if ("$answer" != "") then
++#  set locincdir = "$answer"
++#  set nlocinc
++#  set altered
++#endif
++#if ("$locincdir" != "") then
++#  set incs = ($locincdir:x)
++#  set newlocinc=""
++#  while ($#incs > 0)
++#    if (! -d $incs[1]) then
++#      echo "  *** Warning: <$incs[1]> does not exist"
++#      echo ""
++#      goto proc_locincdir
++#    else 
++#      set newlocinc = ($newlocinc "-I$incs[1]")
++#    endif
++#    shift incs
++#  end
++#  set locinc = "$newlocinc"
++#endif
+ 
+ #
+ # Summarize configuration
+@@ -1160,28 +1159,28 @@
+ 	
+ endif
+ 
+-echo ""
+-echo "Go back and make more changes or review? (n) "
+-echo -n "Enter Return(default), y(yes), n(no), or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-if ("$answer" == "y") goto QuestionAndAnswer
++#echo ""
++#echo "Go back and make more changes or review? (n) "
++#echo -n "Enter Return(default), y(yes), n(no), or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++#if ("$answer" == "y") goto QuestionAndAnswer
+ 
+ #
+ # Save the configuration
+ #
+ 
+ proc_save:
+-echo ""
+-echo "Save current configuration ? (y) "
+-echo -n "Enter Return(default), y(yes), or q(quit) > "
+-set answer="$<"
+-if ("$answer" == "q") goto cleanup
+-
+-if ("$answer" != "y" && "$answer" != "") then
+-	echo "Invalid response"
+-	goto proc_save
+-endif
++#echo ""
++#echo "Save current configuration ? (y) "
++#echo -n "Enter Return(default), y(yes), or q(quit) > "
++#set answer="$<"
++#if ("$answer" == "q") goto cleanup
++
++#if ("$answer" != "y" && "$answer" != "") then
++#	echo "Invalid response"
++#	goto proc_save
++#endif
+ 
+ if (! $?altered) goto shortcut
+ 

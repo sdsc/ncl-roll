@@ -1,0 +1,11 @@
+--- ncl_ncarg-6.1.2/ni/src/ncl/NclHDFEOS.c	2013-02-06 19:28:46.000000000 -0800
++++ patch-files/NclHDFEOS.c	2014-03-21 10:18:59.000000000 -0700
+@@ -28,7 +28,7 @@
+ #endif
+ #include "defs.h"
+ #define HAVE_NETCDF
+-#include <hdf/mfhdf.h>
++#include <mfhdf.h>
+ #include "NclDataDefs.h"
+ #include "NclFileInterfaces.h"
+ #include "NclData.h"
