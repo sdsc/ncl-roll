@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 
-<graph>
+<kickstart>
 
 <description>
-ncl - NCAR Command Language for analyss
+http://www.ncl.ucar.edu
 </description>
 
 <copyright>
@@ -11,11 +11,8 @@ Copyright (c) 2000 - 2014 The Regents of the University of California.
 All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
 </copyright>
 
-<edge from="base">
-  <to>ncl-common</to>
-</edge>
-<order head="base">
-  <tail>ncl-common</tail>
-</order>
+<package>ncl_COMPILERNAME_MPINAME</package>
+<package>ncl-modules</package>
+<package>ncl-roll-test</package>
 
-</graph>
+</kickstart>

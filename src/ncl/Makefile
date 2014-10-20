@@ -62,6 +62,31 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 include pull.mk
 
+COMPILERSETUP =  \
+  module load $(ROLLCOMPILER) || true; \
+  echo === Compiler and version ===; \
+  $(CC) --version
+
+HDF4SETUP = \
+  module load hdf4 || true; \
+  echo === HDF4HOME ===; \
+  echo $${HDF4HOME}
+
+HDF5SETUP = \
+  module load hdf5 || true; \
+  echo === HDF5HOME ===; \
+  echo $${HDF5HOME}
+
+MPISETUP = \
+  module load $(ROLLMPI) || true; \
+  echo === MPIHOME ===; \
+  echo $${MPIHOME}
+
+NETCDFSETUP = \
+  module load netcdf || true; \
+  echo === NETCDFHOME ===; \
+  echo $${NETCDFHOME}
+
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/Configure patch-files/Configure.patch
 	patch $(SOURCE_DIR)/config/LINUX patch-files/LINUX.patch
@@ -70,41 +95,45 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/ni/src/ncl/NclHDF.c patch-files/NclHDF.c.patch
 	patch $(SOURCE_DIR)/ni/src/ncl/NclHDFEOS.c patch-files/NclHDFEOS.c.patch
 	perl -pi -e "s!ROLLNCL!$(PKGROOT)!g" $(SOURCE_DIR)/Configure
+	perl -pi -e "s!ROLLSZIP!$(PWD)/szip!g" $(SOURCE_DIR)/config/LINUX
 	( \
-           . /etc/profile.d/modules.sh; \
-           module load gnu $(ROLLMPI)_$(ROLLNETWORK) netcdf hdf4 hdf5; \
-           perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/config/LINUX; \
-           perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/Configure; \
-           perl -pi -e "s!ROLLHDF4!$${HDF4HOME}!g" $(SOURCE_DIR)/Configure; \
-           perl -pi -e "s!ROLLHDF4!$${HDF4HOME}!g" $(SOURCE_DIR)/config/LINUX; \
-           perl -pi -e "s!ROLLHDF5!$${HDF5HOME}!g" $(SOURCE_DIR)/config/LINUX; \
-           perl -pi -e "s!ROLLMPI!$${MPIHOME}!g" $(SOURCE_DIR)/config/LINUX; \
-           perl -pi -e "s!ROLLSZIP!$(PWD)/szip!g" $(SOURCE_DIR)/config/LINUX; \
-           mkdir szip; \
-           cd $(SZIP_DIR); \
-           ./configure --prefix=$(PWD)/szip; \
-           make; \
-           make install \
-        )
+	  $(COMPILERSETUP); \
+	  $(MPISETUP); \
+	  $(HDF4SETUP); \
+	  $(HDF5SETUP); \
+	  $(NETCDFSETUP); \
+	  perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/config/LINUX; \
+	  perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/Configure; \
+	  perl -pi -e "s!ROLLHDF4!$${HDF4HOME}!g" $(SOURCE_DIR)/Configure; \
+	  perl -pi -e "s!ROLLHDF4!$${HDF4HOME}!g" $(SOURCE_DIR)/config/LINUX; \
+	  perl -pi -e "s!ROLLHDF5!$${HDF5HOME}!g" $(SOURCE_DIR)/config/LINUX; \
+	  perl -pi -e "s!ROLLMPI!$${MPIHOME}!g" $(SOURCE_DIR)/config/LINUX; \
+	  mkdir szip; \
+	  cd $(SZIP_DIR); \
+	  ./configure --prefix=$(PWD)/szip; \
+	  make; \
+	  make install \
+	)
 	@echo "::: Package $(NAME) build complete :::"
 	
 install::
-	mkdir -p $(REDHAT.ROOT)/src/build-ncl-modules
-	mkdir -p $(ROOT)/$(PKGROOT)
-	mkdir -p $(PKGROOT)
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	-mkdir -p -m 755 $(PKGROOT)
 	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
 	( \
-           . /etc/profile.d/modules.sh; \
-           module load gnu $(ROLLMPI)_$(ROLLNETWORK) netcdf hdf4 hdf5; \
+	  $(COMPILERSETUP); \
+	  $(MPISETUP); \
+	  $(HDF4SETUP); \
+	  $(HDF5SETUP); \
+	  $(NETCDFSETUP); \
 	  cd $(SOURCE_DIR); \
 	  ./Configure; \
-          make Everything \
+	  make Everything \
 	)
 	umount $(PKGROOT)
-	cat ncl.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/$(NAME)!g;s!VERSION!$(VERSION)!g;s!ROLLMPI!$(ROLLMPI)!g;s!ROLLNETWORK!$(ROLLNETWORK)!g" \
-          > $(REDHAT.ROOT)/src/build-ncl-modules/$(NAME).module
-	cp -r szip/* $(ROOT)/$(PKGROOT)
+	-rmdir -p $(PKGROOT)
+	cp -r szip/* $(ROOT)/$(PKGROOT)/
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf szip
+	rm -rf $(SOURCE_DIR) szip

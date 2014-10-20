@@ -1,0 +1,5 @@
+#%Module1.0
+setenv NCLHOME /opt/ncl
+prepend-path PATH /opt/ncl/bin
+prepend-path LD_LIBRARY_PATH /opt/ncl/lib
+module load ROLLCOMPILER ROLLMPI netcdf hdf5

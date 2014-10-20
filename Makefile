@@ -54,23 +54,41 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
-# $Log$
-#
+
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+
+ifndef ROLLMPI
+  ROLLMPI = rocks-openmpi
+endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-ifndef ROLLMPI
-  ROLLMPI = openmpi
-endif
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-
 default:
-	make ROLLMPI="$(ROLLMPI)" ROLLNETWORK="$(ROLLNETWORK)" roll
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  cp $$i $$o; \
+	  for c in $(ROLLCOMPILER); do \
+	    COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
+	    perl -pi -e "print and s/COMPILERNAME/$$COMPILERNAME/g if m/COMPILERNAME/" $$o; \
+	  done; \
+	  for m in $(ROLLMPI); do \
+	    MPINAME=`echo $$m | awk -F/ '{print $$1}'`; \
+	    perl -pi -e "print and s/MPINAME/$$MPINAME/g if m/MPINAME/" $$o; \
+	  done; \
+	  perl -pi -e '$$_ = "" if m/COMPILERNAME|MPINAME/' $$o; \
+	done
+	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" ROLLMPI="$(ROLLMPI)" roll
 
-distclean:: clean
-	-rm -f _arch build.log
-	-rm -rf RPMS SRPMS src/build-*
+clean::
+	rm -f _arch bootstrap.py
+
+distclean: clean
+	for i in `ls nodes/*.in`; do \
+	  export o=`echo $$i | sed 's/\.in//'`; \
+	  rm -f $$o; \
+	done
+	rm -fr RPMS SRPMS
+	-rm -f build.log
