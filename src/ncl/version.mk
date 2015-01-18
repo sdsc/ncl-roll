@@ -8,9 +8,9 @@ ifndef ROLLMPI
 endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
-NAME           = ncl_$(COMPILERNAME)_$(MPINAME)
+NAME           = ncl
 VERSION        = 6.1.2
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/ncl
 
 SRC_SUBDIR     = ncl

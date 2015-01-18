@@ -60,32 +60,29 @@ REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-include pull.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
-COMPILERSETUP =  \
-  module load $(ROLLCOMPILER) || true; \
-  echo === Compiler and version ===; \
-  $(CC) --version
+$(NAME).spec: DESCRIPTION LICENSE
 
-HDF4SETUP = \
-  module load hdf4 || true; \
-  echo === HDF4HOME ===; \
-  echo $${HDF4HOME}
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	$(MODULE_LOAD_MPI); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	  $(DESCRIBE_MPI); \
+	  $(DESCRIBE_HDF4); \
+	  $(DESCRIBE_HDF5); \
+	  $(DESCRIBE_NETCDF) \
+	) > $@
 
-HDF5SETUP = \
-  module load hdf5 || true; \
-  echo === HDF5HOME ===; \
-  echo $${HDF5HOME}
-
-MPISETUP = \
-  module load $(ROLLMPI) || true; \
-  echo === MPIHOME ===; \
-  echo $${MPIHOME}
-
-NETCDFSETUP = \
-  module load netcdf || true; \
-  echo === NETCDFHOME ===; \
-  echo $${NETCDFHOME}
+LICENSE: $(SRC_DIRS)
+	cp szip*/COPYING $(SOURCE_DIR)/szip-COPYING
+	cp szip*/INSTALL $(SOURCE_DIR)/szip-INSTALL
+	cp license-files/NCL_source_license.shtml $(SOURCE_DIR)/
+	$(CHECK_LICENSE_FILES)
+	echo NCL and others > $@
 
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/Configure patch-files/Configure.patch
@@ -97,11 +94,11 @@ build: $(SRC_DIRS)
 	perl -pi -e "s!ROLLNCL!$(PKGROOT)!g" $(SOURCE_DIR)/Configure
 	perl -pi -e "s!ROLLSZIP!$(PWD)/szip!g" $(SOURCE_DIR)/config/LINUX
 	( \
-	  $(COMPILERSETUP); \
-	  $(MPISETUP); \
-	  $(HDF4SETUP); \
-	  $(HDF5SETUP); \
-	  $(NETCDFSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MPI); \
+	  $(MODULE_LOAD_HDF4); \
+	  $(MODULE_LOAD_HDF5); \
+	  $(MODULE_LOAD_NETCDF); \
 	  perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/config/LINUX; \
 	  perl -pi -e "s!ROLLNETCDF!$${NETCDFHOME}!g" $(SOURCE_DIR)/Configure; \
 	  perl -pi -e "s!ROLLHDF4!$${HDF4HOME}!g" $(SOURCE_DIR)/Configure; \
@@ -118,22 +115,21 @@ build: $(SRC_DIRS)
 	
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	-mkdir -p -m 755 $(PKGROOT)
-	mount --bind $(ROOT)/$(PKGROOT) $(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
-	  $(COMPILERSETUP); \
-	  $(MPISETUP); \
-	  $(HDF4SETUP); \
-	  $(HDF5SETUP); \
-	  $(NETCDFSETUP); \
+	  $(MODULE_LOAD_CC); \
+	  $(MODULE_LOAD_MPI); \
+	  $(MODULE_LOAD_HDF4); \
+	  $(MODULE_LOAD_HDF5); \
+	  $(MODULE_LOAD_NETCDF); \
 	  cd $(SOURCE_DIR); \
 	  ./Configure; \
 	  make Everything \
 	)
-	umount $(PKGROOT)
-	-rmdir -p $(PKGROOT)
+	$(PKGROOT_BIND_UMOUNT)
 	cp -r szip/* $(ROOT)/$(PKGROOT)/
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) szip
+	rm -rf $(SOURCE_DIR) $(SZIP_DIR) DESCRIPTION LICENSE
