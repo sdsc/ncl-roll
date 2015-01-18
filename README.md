@@ -20,15 +20,18 @@ Rocks development machine.
 
 ## Dependencies
 
-HDF4 and HDF5 libraries.  If there are hdf4/5 modulefiles present (the hdf-roll
-provides this), then the build process will pick these up automatically.
-Otherwise, you'll need to set the HDF4HOME and HDF5HOME environment variables
-to the library location.
+The sdsc-roll must be installed on the build machine, since the build process
+depends on make include files provided by that roll.
 
-NETCDF libraries.  If there is a netcdf modulefile present (the netcdf-roll
-provides this), then the build process will pick these up automatically.
-Otherwise, you'll need to set the NETCDFHOME environment variable
-to the library location.
+The roll sources assume that modulefiles provided by SDSC compiler and mpi
+rolls are available, but it will build without them as long as the environment
+variables they provide are otherwise defined.
+
+The build process requires the NETCDF, HDF4, and HDF5 libraries and assumes that the
+modulefiles provided by the SDSC netcdf-roll and hdf-roll are available.  It will build without
+the modulefiles as long as the environment variables they provide are otherwise
+defined.
+
 
 ## Building
 
@@ -56,16 +59,6 @@ make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib 2>&1 | tee build.log
 The build process recognizes "gnu", "intel" or "pgi" as the value for the
 `ROLLCOMPILER` variable; any MPI modulefile name may be used as the value of
 the `ROLLMPI` variable.  The default values are "gnu" and "rocks-openmpi".
-
-The values of the `ROLLCOMPILER` and `ROLLMPI` variables are incorporated into
-the names of the produced rpms.  For example,
-
-```shell
-make ROLLCOMPILER=intel ROLLMPI=mvapich2_ib 2>&1 | tee build.log
-```
-
-produces a roll containing an rpm with a name that begins
-`ncl_intel_mvapich2_ib`.
 
 
 ## Installation
