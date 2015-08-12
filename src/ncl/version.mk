@@ -8,9 +8,9 @@ ifndef ROLLMPI
 endif
 MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
-NAME           = ncl
+NAME           = sdsc-ncl
 VERSION        = 6.1.2
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/ncl
 
 SRC_SUBDIR     = ncl
@@ -28,3 +28,5 @@ SZIP_PKG       = $(SZIP_NAME)-$(SZIP_VERSION).$(SZIP_SUFFIX)
 SZIP_DIR       = $(SZIP_PKG:%.$(SZIP_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(SZIP_PKG)
+
+RPM.EXTRAS     = AutoReq:No
