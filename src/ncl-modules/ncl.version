@@ -1,2 +1,6 @@
 #%Module1.0
 set ModulesVersion "VERSION"
+module-whatis "NCL data analysis/visualization tool"
+module-whatis "Version: VERSION"
+setenv NCLHOME /opt/ncl
+prepend-path PATH /opt/ncl/bin
