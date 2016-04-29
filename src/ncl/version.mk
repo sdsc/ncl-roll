@@ -10,7 +10,7 @@ MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME           = sdsc-ncl
 VERSION        = 6.1.2
-RELEASE        = 3
+RELEASE        = 4
 PKGROOT        = /opt/ncl
 
 SRC_SUBDIR     = ncl
