@@ -10,7 +10,7 @@ MPINAME := $(firstword $(subst /, ,$(ROLLMPI)))
 
 NAME           = sdsc-ncl
 VERSION        = 6.1.2
-RELEASE        = 4
+RELEASE        = 5
 PKGROOT        = /opt/ncl
 
 SRC_SUBDIR     = ncl
@@ -29,4 +29,5 @@ SZIP_DIR       = $(SZIP_PKG:%.$(SZIP_SUFFIX)=%)
 
 TAR_GZ_PKGS    = $(SOURCE_PKG) $(SZIP_PKG)
 
-RPM.EXTRAS     = AutoReq:No
+RPM.EXTRAS     = AutoReq:No\nAutoProv:No
+RPM.PREFIX     = $(PKGROOT)
