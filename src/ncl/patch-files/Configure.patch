@@ -1,5 +1,5 @@
 --- ncl-6.5.1/Configure	2018-07-15 18:43:16.000000000 -0700
-+++ patch-files/Configure	2018-10-17 12:10:56.392812189 -0700
++++ patch-files/Configure	2018-10-17 13:15:55.189250733 -0700
 @@ -185,10 +185,10 @@
  
  onintr cleanup
@@ -263,19 +263,6 @@
 -    set altered
 -  endif
 -endif
--set hdfwithszip = "n"
--if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
--    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
--    echo ""
--    echo "Did you build HDF4 with szip support? ($hdfwithszip)"
--    echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
--    set answer="$<"
--    if ("$answer" == "q") goto cleanup
--    if (("$answer" != "") && ("$answer" != "$hdfwithszip")) then
--        set hdfwithszip = "$answer"
--        set hdflib = "-lmfhdf -ldf -ljpeg -lz -lsz"
--    endif
--endif
 +#     set altered
 +# endif
 +#else
@@ -291,7 +278,19 @@
 +#   set altered
 +# endif
 +#endif
-+#set hdfwithszip = "n"
+ set hdfwithszip = "n"
+-if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
+-    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
+-    echo ""
+-    echo "Did you build HDF4 with szip support? ($hdfwithszip)"
+-    echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-    set answer="$<"
+-    if ("$answer" == "q") goto cleanup
+-    if (("$answer" != "") && ("$answer" != "$hdfwithszip")) then
+-        set hdfwithszip = "$answer"
+-        set hdflib = "-lmfhdf -ldf -ljpeg -lz -lsz"
+-    endif
+-endif
 +#if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
 +#    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
 +#    echo ""
