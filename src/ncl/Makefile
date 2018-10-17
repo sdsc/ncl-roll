@@ -85,10 +85,6 @@ LICENSE: $(SRC_DIRS)
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/Configure patch-files/Configure.patch
 	patch $(SOURCE_DIR)/config/LINUX patch-files/LINUX.patch
-	patch $(SOURCE_DIR)/ncarview/src/lib/libncarg_ras/hdf.c patch-files/hdf.c.patch
-	patch $(SOURCE_DIR)/ni/src/ncl/FileSupport.c patch-files/FileSupport.c.patch
-	patch $(SOURCE_DIR)/ni/src/ncl/NclHDF.c patch-files/NclHDF.c.patch
-	patch $(SOURCE_DIR)/ni/src/ncl/NclHDFEOS.c patch-files/NclHDFEOS.c.patch
 	perl -pi -e "s!ROLLNCL!$(PKGROOT)!g" $(SOURCE_DIR)/Configure
 	perl -pi -e "s!ROLLSZIP!$(PWD)/szip!g" $(SOURCE_DIR)/config/LINUX
 	( \

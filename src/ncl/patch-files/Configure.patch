@@ -1,6 +1,6 @@
---- ncl_ncarg-6.1.2/Configure	2013-02-06 19:29:23.000000000 -0800
-+++ patch-files/Configure	2014-03-24 08:53:12.000000000 -0700
-@@ -183,10 +183,10 @@
+--- ncl-6.5.1/Configure	2018-07-15 18:43:16.000000000 -0700
++++ patch-files/Configure	2018-10-17 12:10:56.392812189 -0700
+@@ -185,10 +185,10 @@
  
  onintr cleanup
  
@@ -15,7 +15,7 @@
  
  if ($?verbose_option) then
    cat <<"EOF"
-@@ -202,9 +202,9 @@
+@@ -204,9 +204,9 @@
  ======================================================================
  "EOF"
  
@@ -28,7 +28,7 @@
  
    cat <<"EOF"
  ======================================================================
-@@ -228,9 +228,9 @@
+@@ -230,9 +230,9 @@
    echo "======================================================================"
  endif
  
@@ -41,7 +41,7 @@
  
  
  #
-@@ -258,25 +258,25 @@
+@@ -260,25 +260,25 @@
  "EOF"
    endif
  
@@ -64,7 +64,7 @@
 -  endif
 -else
 +# endif
-+#else
++#lse
  #  echo ""
  #  echo "Not building NCL...source code directory is not available."
 -  set buildncl = "n"
@@ -73,16 +73,16 @@
 -  set newbuildncl
 -  set altered
 -endif
-+#  set buildncl = "n"
-+#  set buildudunits = "n"
-+#  set buildtriangle = "n"
-+#  set newbuildncl
-+#  set altered
++# set buildncl = "n"
++# set buildudunits = "n"
++# set buildtriangle = "n"
++# set newbuildncl
++# set altered
 +#endif
  
  #
  # Parent installation directory for NCL/NCAR Graphics.
-@@ -296,26 +296,26 @@
+@@ -298,26 +298,27 @@
  "EOF"
  endif
  
@@ -99,6 +99,7 @@
 +#set answer="$<"
 +#if ("$answer" == "q") goto cleanup
 +#if ("$answer" != "") then
++#  set parentdir="$answer"
 +  set parentdir=ROLLNCL
    set altered
 -endif
@@ -127,7 +128,7 @@
  
  #
  # Make sure subdirs bin, include, lib, and man are writable.
-@@ -359,16 +359,16 @@
+@@ -361,16 +362,16 @@
  "EOF"
  endif
  
@@ -154,7 +155,16 @@
  
  if (-d "$tmpdir") then
    if (! -w "$tmpdir") then
-@@ -424,18 +424,18 @@
+@@ -386,7 +387,7 @@
+ #
+ # NCAR View stuff.
+ #
+-
++#
+ if ($?verbose_option) then
+   cat <<"EOF"
+ ======================================================================
+@@ -426,18 +427,18 @@
  "EOF"
  endif
  
@@ -177,15 +187,15 @@
 +#set answer="$<"
 +#if ("$answer" == "q") goto cleanup
 +#if (("$answer" != "") && ("$answer" != "$buildnc4support")) then
-+	set buildnc4support = "y"
-+ 	set newbuildnc4support
++#	set buildnc4support = $answer
++#	set newbuildnc4support
 +#    echo "Setting support for NetCDF 4..."
 +#    set altered
 +#endif
  
  #
  # Don't ask about PNG support here, because PNG support is now
-@@ -499,60 +499,60 @@
+@@ -501,60 +502,61 @@
  "EOF"
  endif
  
@@ -229,14 +239,14 @@
 -  if ("$answer" == "q") goto cleanup
 -  if (("$answer" != "") && ("$answer" != "$buildrasterhdf")) then
 -      set buildrasterhdf = $answer
-+#  endif
-+#  echo ""
-+#  echo "Also build HDF4 support (optional) into raster library? ($buildrasterhdf)"
-+#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
-+#  set answer="$<"
-+#  if ("$answer" == "q") goto cleanup
-+#  if (("$answer" != "") && ("$answer" != "$buildrasterhdf")) then
-+       set buildrasterhdf = "n"
++# endif
++# echo ""
++# echo "Also build HDF4 support (optional) into raster library? ($buildrasterhdf)"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildrasterhdf")) then
++      set buildrasterhdf = "n"
        set newbuildrasterhdf
 -      set altered
 -  endif
@@ -266,22 +276,22 @@
 -        set hdflib = "-lmfhdf -ldf -ljpeg -lz -lsz"
 -    endif
 -endif
-+       set altered
-+#  endif
++#     set altered
++# endif
 +#else
-+#  echo ""
-+#  echo "Build HDF4 support (optional) into raster library? ($buildrasterhdf)"
-+#  echo "(Requires the external HDF4 libraries available from http://www.hdfgroup.org/release4/obtain.html) "
-+#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
-+#  set answer="$<"
-+#  if ("$answer" == "q") goto cleanup
-+#  if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
-+#   set buildrasterhdf = "n"
++# echo ""
++# echo "Build HDF4 support (optional) into raster library? ($buildrasterhdf)"
++# echo "(Requires the external HDF4 libraries available from http://www.hdfgroup.org/release4/obtain.html) "
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildhdf4")) then
++#   set buildrasterhdf = $answer
 +#   set newbuildrasterhdf
 +#   set altered
-+#  endif
++# endif
 +#endif
-+set hdfwithszip = "y"
++#set hdfwithszip = "n"
 +#if (("$buildhdf4" == "y") || ("$buildhdf4" == "Y") || \
 +#    ("$buildrasterhdf" == "y") || ("$buildrasterhdf" == "Y")) then
 +#    echo ""
@@ -290,14 +300,15 @@
 +#    set answer="$<"
 +#    if ("$answer" == "q") goto cleanup
 +#    if (("$answer" != "") && ("$answer" != "$hdfwithszip")) then
-+         set hdfwithszip = "y"
-+         set hdflib = "-LROLLHDF4/lib -lmfhdf -ldf -ljpeg -lz -lsz"
++#        set hdfwithszip = "$answer"
++#        set hdflib = "-lmfhdf -ldf -ljpeg -lz -lsz"
++         set altered
 +#    endif
 +#endif
  
  #
  # Only ask about NetCDF- UDUNITS, HDF-EOS2, HDF-EOS5, HDF5, Triangle, Vis5d+, and
-@@ -581,20 +581,20 @@
+@@ -583,20 +585,20 @@
  "EOF"
    endif
  
@@ -315,24 +326,32 @@
 -	set newbuildtriangle
 -        set altered
 -  endif
-+#  echo ""
-+#  echo "Build Triangle support (optional) into NCL ($buildtriangle)"
-+#  echo "Requires 'triangle.c' and 'triangle.h' code from"
-+#  echo "http://www.cs.cmu.edu/~quake/triangle.html"
-+#  echo "You must agree to the license restrictions in the above URL,"
-+#  echo "download these two files, and put them in ni/src/lib/hlu"
-+#  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
-+#  set answer="$<"
-+#  if ("$answer" == "q") goto cleanup
-+#  if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
-+ 	set buildtriangle = "n"
-+ 	set newbuildtriangle
-+         set altered
-+#  endif
++# echo ""
++# echo "Build Triangle support (optional) into NCL ($buildtriangle)"
++# echo "Requires 'triangle.c' and 'triangle.h' code from"
++# echo "http://www.cs.cmu.edu/~quake/triangle.html"
++# echo "You must agree to the license restrictions in the above URL,"
++# echo "download these two files, and put them in ni/src/lib/hlu"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
++#       set buildtriangle = $answer
++#       set newbuildtriangle
++#       set altered
++# endif
  
  
  #
-@@ -622,19 +622,19 @@
+@@ -617,26 +619,26 @@
+ 
+ 	THIS LIBRARY IS NOT NEEDED FOR BUILDING NCAR GRAPHICS.
+ 
+-	If you built your NetCDF-4 library with the "--enable-netcdf-4"
++#If you built your NetCDF-4 library with the "--enable-netcdf-4"
+ 	option, then you should answer "y" to this question.
+ 
+ ======================================================================
  "EOF"
    endif
  
@@ -356,15 +375,15 @@
 +# set answer="$<"
 +# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$buildnetcdf4")) then
-+        set buildnetcdf4 = y
-+ 	set newbuildnetcdf4
++#       set buildnetcdf4 = $answer
++#  	set newbuildnetcdf4
          set altered
 -  endif
-+#  endif
++# endif
  
    if ($?verbose_option) then
      cat <<"EOF"
-@@ -657,17 +657,17 @@
+@@ -659,17 +661,17 @@
  "EOF"
    endif
  
@@ -387,13 +406,13 @@
 +# set answer="$<"
 +# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$netcdfwithdap")) then
-+      set netcdfwithdap =  "n"
++      set netcdfwithdap = "n"
 +      set netcdflib = "-LROLLNETCDF/lib -lnetcdf"
 +# endif
  
  
  #
-@@ -686,18 +686,18 @@
+@@ -688,18 +690,18 @@
  "EOF"
    endif
  
@@ -423,8 +442,8 @@
 +# endif
  
  #
- # GRIDSPEC
-@@ -750,18 +750,18 @@
+ # EEMD
+@@ -780,18 +782,18 @@
  "EOF"
    endif
  
@@ -446,15 +465,15 @@
 +# set answer="$<"
 +# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$buildudunits")) then
-+        set buildudunits = "n"
-+        set newbuildudunits
++#       set buildudunits = $answer
++#       set newbuildudunits
          set altered
 -  endif
 +# endif
  
  #
  # Vis5d+
-@@ -783,18 +783,18 @@
+@@ -813,18 +815,18 @@
  "EOF"
    endif
  
@@ -485,7 +504,7 @@
  
  #
  # HDF-EOS2
-@@ -815,19 +815,19 @@
+@@ -845,19 +847,19 @@
  "EOF"
    endif
  
@@ -516,7 +535,7 @@
  
  
  #
-@@ -848,18 +848,18 @@
+@@ -878,18 +880,18 @@
  "EOF"
    endif
  
@@ -526,16 +545,15 @@
 -  echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
 -  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
 -  set answer="$<"
--  if ("$answer" == "q") goto cleanup
--  if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
--  	set buildhdf5 = $answer
 +# echo ""
 +# echo "Build HDF5 support (optional) into NCL ($buildhdf5)"
 +# echo "(Requires the external HDF5 library available from"
 +# echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
 +# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
 +# set answer="$<"
-+# if ("$answer" == "q") goto cleanup
+   if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
+-  	set buildhdf5 = $answer
 +# if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
 +  	set buildhdf5 = "y"
    	set newbuildhdf5
@@ -545,7 +563,7 @@
  
  #
  # HDF-EOS5
-@@ -879,18 +879,18 @@
+@@ -909,18 +911,18 @@
  "EOF"
    endif
  
@@ -574,7 +592,7 @@
  
  #
  # GRIB2
-@@ -908,20 +908,19 @@
+@@ -938,19 +940,19 @@
  "EOF"
    endif
  
@@ -601,19 +619,18 @@
    	set newbuildgrib2
          set altered
 -  endif
--
 +# endif
+ 
  else
    set buildhdfeos  = "n"
-   set buildhdfeos5 = "n"
-@@ -1066,35 +1065,35 @@
+@@ -1096,35 +1098,35 @@
  "EOF"
  endif
  
 -set loclibdir = `echo "$loclib" | sed -e 's/-L//g'`
 +#set loclibdir = `echo "$loclib" | sed -e 's/-L//g'`
  
- proc_loclibdir:
+-proc_loclibdir:
 -echo ""
 -echo "Enter local library search path(s) : $loclibdir"
 -echo -n "Enter Return (default), new directories, or q(quit) > "
@@ -640,6 +657,7 @@
 -  end
 -  set loclib = "$newloclib"
 -endif
++#proc_loclibdir:
 +#echo ""
 +#echo "Enter local library search path(s) : $loclibdir"
 +#echo -n "Enter Return (default), new directories, or q(quit) > "
@@ -669,12 +687,9 @@
  
  #
  # X11 include files.
-@@ -1117,34 +1116,34 @@
+@@ -1149,32 +1151,32 @@
  
- 
- 
--set locincdir = `echo "$locinc" | sed -e 's/-I//g'`
-+#set locincdir = `echo "$locinc" | sed -e 's/-I//g'`
+ set locincdir = `echo "$locinc" | sed -e 's/-I//g'`
  
 -proc_locincdir:
 -echo ""
@@ -731,7 +746,7 @@
  
  #
  # Summarize configuration
-@@ -1160,28 +1159,28 @@
+@@ -1190,28 +1192,28 @@
  	
  endif
  
@@ -768,7 +783,7 @@
 +#echo -n "Enter Return(default), y(yes), or q(quit) > "
 +#set answer="$<"
 +#if ("$answer" == "q") goto cleanup
-+
++#
 +#if ("$answer" != "y" && "$answer" != "") then
 +#	echo "Invalid response"
 +#	goto proc_save
