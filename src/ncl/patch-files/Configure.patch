@@ -1,5 +1,5 @@
 --- ncl-6.5.1/Configure	2018-07-15 18:43:16.000000000 -0700
-+++ patch-files/Configure	2018-10-17 13:15:55.189250733 -0700
++++ patch-files/Configure	2018-10-18 14:59:17.709534661 -0700
 @@ -185,10 +185,10 @@
  
  onintr cleanup
@@ -323,8 +323,6 @@
 -  if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
 -	set buildtriangle = $answer
 -	set newbuildtriangle
--        set altered
--  endif
 +# echo ""
 +# echo "Build Triangle support (optional) into NCL ($buildtriangle)"
 +# echo "Requires 'triangle.c' and 'triangle.h' code from"
@@ -335,9 +333,10 @@
 +# set answer="$<"
 +# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$buildtriangle")) then
-+#       set buildtriangle = $answer
-+#       set newbuildtriangle
-+#       set altered
++        set buildtriangle = "y"
++        set newbuildtriangle
+         set altered
+-  endif
 +# endif
  
  
@@ -442,6 +441,33 @@
  
  #
  # EEMD
+@@ -717,17 +719,17 @@
+ "EOF"
+   endif
+ 
+-  echo ""
+-  echo "Build EEMD support (optional) into NCL? ($buildeemd)"
+-  echo "(Requires GSL ftp://ftp.gnu.org/gnu/gsl/"
+-  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
+-  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildeemd")) then
+-      set buildeemd = $answer
++# echo ""
++# echo "Build EEMD support (optional) into NCL? ($buildeemd)"
++# echo "(Requires GSL ftp://ftp.gnu.org/gnu/gsl/"
++# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
++# set answer="$<"
++# if ("$answer" == "q") goto cleanup
++# if (("$answer" != "") && ("$answer" != "$buildeemd")) then
++      set buildeemd = "n"
+       set newbuildeemd
+       set altered
+-  endif
++# endif
+ 
+ #
+ # GRIDSPEC
 @@ -780,18 +782,18 @@
  "EOF"
    endif
@@ -464,8 +490,8 @@
 +# set answer="$<"
 +# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$buildudunits")) then
-+#       set buildudunits = $answer
-+#       set newbuildudunits
++        set buildudunits = "no"
++        set newbuildudunits
          set altered
 -  endif
 +# endif
@@ -544,15 +570,16 @@
 -  echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
 -  echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
 -  set answer="$<"
+-  if ("$answer" == "q") goto cleanup
+-  if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
+-  	set buildhdf5 = $answer
 +# echo ""
 +# echo "Build HDF5 support (optional) into NCL ($buildhdf5)"
 +# echo "(Requires the external HDF5 library available from"
 +# echo "http://www.hdfgroup.org/ftp/HDF5/current/src/ "
 +# echo -n "Enter Return (default), y(yes), n(no), or q(quit) > "
 +# set answer="$<"
-   if ("$answer" == "q") goto cleanup
--  if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
--  	set buildhdf5 = $answer
++# if ("$answer" == "q") goto cleanup
 +# if (("$answer" != "") && ("$answer" != "$buildhdf5")) then
 +  	set buildhdf5 = "y"
    	set newbuildhdf5

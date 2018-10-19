@@ -87,6 +87,8 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/config/LINUX patch-files/LINUX.patch
 	perl -pi -e "s!ROLLNCL!$(PKGROOT)!g" $(SOURCE_DIR)/Configure
 	perl -pi -e "s!ROLLSZIP!$(PWD)/szip!g" $(SOURCE_DIR)/config/LINUX
+	cp $(TRIANGLE_DIR)/triangle.c $(SOURCE_DIR)/ni/src/lib/hlu
+	cp $(TRIANGLE_DIR)/triangle.h $(SOURCE_DIR)/ni/src/lib/hlu
 	( \
 	  $(MODULE_LOAD_CC); \
 	  $(MODULE_LOAD_MPI); \
@@ -126,4 +128,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) $(SZIP_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(SZIP_DIR) $(SZIP_NAME) DESCRIPTION LICENSE
